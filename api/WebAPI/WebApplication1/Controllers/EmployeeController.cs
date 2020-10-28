@@ -143,7 +143,7 @@ namespace WebApplication1.Controllers
             }
             catch (Exception err)
             {
-                return "anapnymous.png" + err.ToString();
+                return "anonymous.png" + err.ToString();
             }
         }
 
