@@ -8,6 +8,7 @@ using WebApplication1.Models;
 using System.Data.SqlClient;
 using System.Data;
 using System.Configuration;
+using System.Web;
 
 namespace WebApplication1.Controllers
 {
@@ -33,16 +34,19 @@ namespace WebApplication1.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, table);
         }
 
-        public string Post(Employee dep)
+        public string Post(Employee emp)
         {
             try
             {
-                string query = @" insert into dbo.Employee values (
-                         '" + dep.EmployeeName + @"' 
-                        '" + dep.Department + @"'
-                        '" + dep.DateOfJoining + @"'
-                        '" + dep.PhotoFileName + @"'
-                        )";
+                string query = @"
+                        insert into dbo.Employee values 
+                        (
+                        '" + emp.EmployeeName + @"', 
+                        '" + emp.Department + @"',
+                        '" + emp.DateOfJoining + @"',
+                        '" + emp.PhotoFileName + @"'
+                        )
+                           ";
                 DataTable table = new DataTable();
                 using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["EmployeeAppDB"].ConnectionString))
                 using (var cmd = new SqlCommand(query, con))
@@ -53,24 +57,24 @@ namespace WebApplication1.Controllers
                 }
                 return "Added Successfully!!";
             }
-            catch (Exception)
+            catch (Exception err)
             {
-                return "Failed to Add!!";
+                return "Failed to Add!!" + err.ToString();
             }
         }
 
-        public string Put(Employee dep)
+        public string Put(Employee emp)
         {
 
             try
             {
                 string query = @"
                                update dbo.Employee set 
-                               EmployeeName='" + dep.EmployeeName + @"' 
-                               Department='" + dep.Department + @"' 
-                               DateOfJoining='" + dep.DateOfJoining + @"' 
-                               PhotoFileName='" + dep.PhotoFileName + @"' 
-                               where EmployeeId = " + dep.EmployeeId + @"
+                               EmployeeName='" + emp.EmployeeName + @"' ,
+                               Department='" + emp.Department + @"' ,
+                               DateOfJoining='" + emp.DateOfJoining + @"' ,
+                               PhotoFileName='" + emp.PhotoFileName + @"' 
+                               where EmployeeId = " + emp.EmployeeId + @"
                                ";
                 DataTable table = new DataTable();
                 using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["EmployeeAppDB"].ConnectionString))
@@ -82,9 +86,9 @@ namespace WebApplication1.Controllers
                 }
                 return "Updated Successfully!!";
             }
-            catch (Exception)
+            catch (Exception err)
             {
-                return "Failed to Update!!";
+                return "Failed to Update!!" + err.ToString();
             }
         }
 
@@ -113,7 +117,7 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public HttpResponseMessage GetAllDeparmentNames()
         {
-            string query = @" select DepartmentName from dbo.Employee ";
+            string query = @" select DepartmentName from dbo.Department ";
             DataTable table = new DataTable();
             using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["EmployeeAppDB"].ConnectionString))
             using (var cmd = new SqlCommand(query, con))
@@ -124,6 +128,25 @@ namespace WebApplication1.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK,table);
         }
+
+        [Route("api/Employee/SaveFile")]
+        public string SaveFile()
+        {
+            try
+            {
+                var httpRequest = HttpContext.Current.Request;
+                var postedFile = httpRequest.Files[0];
+                string filename = postedFile.FileName;
+                var physicalPath = HttpContext.Current.Server.MapPath("~/Photos/" + filename);
+                postedFile.SaveAs(physicalPath);
+                return filename;
+            }
+            catch (Exception err)
+            {
+                return "anapnymous.png" + err.ToString();
+            }
+        }
+
         
     }
 }
