@@ -17,7 +17,7 @@ namespace WebApplication1.Controllers
         public HttpResponseMessage Get()
         {
             string query = @" select EmployeeId, EmployeeName,Department, convert(varchar(10),DateofJoining,120)as DateOfJoining,
-                                PhotoFilename
+                                PhotoFileName
                                 from dbo.Employee";
 
             DataTable table = new DataTable();
