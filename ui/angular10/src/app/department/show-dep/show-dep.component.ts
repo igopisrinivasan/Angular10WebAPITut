@@ -36,6 +36,15 @@ export class ShowDepComponent implements OnInit {
     this.ActivateAddEditDepComp = true;
   }
 
+  deleteClick(item) {
+    if (confirm('Are you Sure??')) {
+      this.service.deleteDepartment(item.DepartmentId).subscribe((data) => {
+        alert(data.toString());
+        this.refreshDepList();
+      });
+    }
+  }
+
   refreshDepList() {
     this.service.getDepList().subscribe((data) => {
       this.DepartmentList = data;
