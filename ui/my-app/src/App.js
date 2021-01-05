@@ -1,29 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
 
-import {Home} from './Home';
-import {Department} from './Department';
-import {Employee} from './Employee';
-import {Navigation} from './Navigation';
+import { Home } from "./Home";
+import { Department } from "./Department";
+import { Employee } from "./Employee";
+import { Navigation } from "./Navigation";
 
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 function App() {
   return (
     <BrowserRouter>
-    <div className="container">
-     <h3 className="m-3 d-flex justify-content-center">
-       React JS Tutorial
-     </h3>
+      <div className="container">
+        <h3 className="m-3 d-flex justify-content-center">
+          [ React JS, .Net Core API, SQL DB ] App Demo Project for API Testing
+        </h3>
 
-     <Navigation/>
+        <Navigation />
 
-     <Switch>
-       <Route path='/' component={Home} exact/>
-       <Route path='/department' component={Department}/>
-       <Route path='/employee' component={Employee}/>
-     </Switch>
-    </div>
+        <Switch>
+          <Route path="/" component={Home} exact />
+          <Route path="/department" component={Department} />
+          <Route path="/employee" component={Employee} />
+        </Switch>
+      </div>
     </BrowserRouter>
   );
 }
